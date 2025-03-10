@@ -84,3 +84,69 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
+
+//Task 5
+
+import React, { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+
+const SupportTicket = ({ ticket, onUpdate }) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedTicket, setEditedTicket] = useState({ ...ticket });
+
+  const handleEdit = () => setIsEditing(true);
+  const handleChange = (e) => {
+    setEditedTicket({ ...editedTicket, [e.target.name]: e.target.value });
+  };
+
+  const handleSave = () => {
+    onUpdate(editedTicket);
+    setIsEditing(false);
+  };
+
+  return (
+    <Card onDoubleClick={handleEdit} className="p-4 cursor-pointer border rounded-lg shadow-md">
+      <CardContent>
+        {isEditing ? (
+          <div className="space-y-2">
+            <Input name="customer" value={editedTicket.customer} onChange={handleChange} placeholder="Customer Name" />
+            <Textarea name="issue" value={editedTicket.issue} onChange={handleChange} placeholder="Issue Description" />
+            <Input name="priority" value={editedTicket.priority} onChange={handleChange} placeholder="Priority Level" />
+            <Button onClick={handleSave}>Save</Button>
+          </div>
+        ) : (
+          <div>
+            <h3 className="text-lg font-bold">{ticket.customer}</h3>
+            <p className="text-sm text-gray-600">{ticket.issue}</p>
+            <p className="text-sm font-semibold">Priority: {ticket.priority}</p>
+            <Button onClick={handleEdit} className="mt-2">Edit</Button>
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+};
+
+const SupportTicketsList = () => {
+  const [tickets, setTickets] = useState([
+    { id: 1, customer: "John Doe", issue: "Login issue", priority: "High" },
+    { id: 2, customer: "Jane Smith", issue: "Payment failure", priority: "Medium" },
+  ]);
+
+  const updateTicket = (updatedTicket) => {
+    setTickets(tickets.map(ticket => (ticket.id === updatedTicket.id ? updatedTicket : ticket)));
+  };
+
+  return (
+    <div className="grid gap-4 p-4">
+      {tickets.map((ticket) => (
+        <SupportTicket key={ticket.id} ticket={ticket} onUpdate={updateTicket} />
+      ))}
+    </div>
+  );
+};
+
+export default SupportTicketsList;
