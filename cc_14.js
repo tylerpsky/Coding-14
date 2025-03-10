@@ -35,3 +35,16 @@ createTicket('Jane Smith', 'Error message on checkout page', 'Medium');
 
 //Task 3
 
+function highlightHighPriorityTickets() {
+    const highPriorityTickets = document.querySelectorAll('.priority-high');
+    
+    const ticketsArray = Array.from(highPriorityTickets);
+    
+    ticketsArray.forEach(ticket => {
+        ticket.style.backgroundColor = '#ffcccc'; // Light red background
+        ticket.style.border = '2px solid red'; // Red border
+        ticket.style.fontWeight = 'bold'; // Make text bold
+    });
+}
+
+highlightHighPriorityTickets();
