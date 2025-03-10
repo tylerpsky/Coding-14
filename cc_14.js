@@ -48,3 +48,39 @@ function highlightHighPriorityTickets() {
 }
 
 highlightHighPriorityTickets();
+
+//Task 4
+
+document.addEventListener("DOMContentLoaded", () => {
+    const ticketContainer = document.getElementById("ticketContainer");
+    
+    ticketContainer.addEventListener("click", (event) => {
+        if (event.target.classList.contains("ticket")) {
+            console.log("Ticket clicked: ", event.target.dataset.id);
+        }
+    });
+
+    ticketContainer.addEventListener("click", (event) => {
+        if (event.target.classList.contains("resolveBtn")) {
+            event.stopPropagation(); 
+            
+            const ticket = event.target.closest(".ticket");
+            if (ticket) {
+                resolveTicket(ticket).then(() => {
+                    ticketContainer.removeChild(ticket);
+                    console.log("Ticket resolved and removed successfully.");
+                }).catch((error) => {
+                    console.error("Error resolving ticket: ", error);
+                });
+            }
+        }
+    });
+
+    function resolveTicket(ticket) {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve();
+            }, 500); 
+        });
+    }
+});
